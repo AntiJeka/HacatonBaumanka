@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      alignment="CENTER"
+      spacing="40.0"
+      style="-fx-padding: 50; -fx-background-color: #2c3e50;"
+      prefHeight="800" prefWidth="1200"
+      fx:controller="ru.kofa.hacatonfintech.controller.AddObjectController">
+
+    <!-- Заголовок -->
+    <VBox alignment="CENTER" spacing="15">
+        <Label text="ДОБАВЛЕНИЕ ОБЪЕКТА"
+               style="-fx-font-size: 48px; -fx-font-weight: bold; -fx-text-fill: #ecf0f1; -fx-font-family: 'Arial';" />
+        <Separator prefWidth="700" style="-fx-background-color: #34495e;"/>
+    </VBox>
+
+    <!-- Форма ввода -->
+    <VBox spacing="30.0" alignment="CENTER"
+          style="-fx-padding: 50; -fx-background-color: #34495e; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #7f8c8d; -fx-border-width: 3;"
+          prefWidth="800">
+
+        <!-- Поле для названия объекта -->
+        <VBox spacing="12.0" prefWidth="600">
+            <Label text="НАЗВАНИЕ ОБЪЕКТА *"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #ecf0f1; -fx-font-family: 'Arial';" />
+            <TextField fx:id="nameField"
+                       promptText="Введите название объекта..."
+                       style="-fx-pref-width: 600px; -fx-pref-height: 60px; -fx-font-size: 18px; -fx-background-color: #2c3e50; -fx-text-fill: #ecf0f1; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #7f8c8d; -fx-border-width: 2; -fx-padding: 15; -fx-font-family: 'Arial';" />
+        </VBox>
+
+        <!-- Поле для номера ячейки -->
+        <VBox spacing="12.0" prefWidth="600">
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <Label text="НОМЕР ЯЧЕЙКИ"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #ecf0f1; -fx-font-family: 'Arial';" />
+                <Label text="(опционально)"
+                       style="-fx-font-size: 14px; -fx-text-fill: #bdc3c7; -fx-font-style: italic;" />
+            </HBox>
+            <TextField fx:id="cellField"
+                       promptText="A1, B2, C3..."
+                       style="-fx-pref-width: 600px; -fx-pref-height: 60px; -fx-font-size: 18px; -fx-background-color: #2c3e50; -fx-text-fill: #ecf0f1; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #7f8c8d; -fx-border-width: 2; -fx-padding: 15; -fx-font-family: 'Arial';" />
+        </VBox>
+
+        <!-- Сообщения -->
+        <Label fx:id="errorLabel"
+               text=""
+               style="-fx-text-fill: #e74c3c; -fx-font-size: 16px; -fx-font-weight: bold; -fx-wrap-text: true; -fx-max-width: 600px; -fx-alignment: center; -fx-font-family: 'Arial';"
+               visible="false" />
+
+        <!-- Кнопки действий -->
+        <HBox spacing="25" alignment="CENTER">
+            <Button fx:id="addButton"
+                    text="ДОБАВИТЬ"
+                    onAction="#handleAddObject"
+                    style="-fx-pref-width: 200px; -fx-pref-height: 65px; -fx-font-size: 18px; -fx-font-weight: bold; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 8; -fx-border-radius: 8; -fx-cursor: hand; -fx-font-family: 'Arial';"
+                    HBox.hgrow="ALWAYS" />
+
+            <Button text="НАЗАД"
+                    onAction="#handleBackButton"
+                    style="-fx-pref-width: 180px; -fx-pref-height: 65px; -fx-font-size: 18px; -fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 8; -fx-border-radius: 8; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-family: 'Arial';"
+                    HBox.hgrow="ALWAYS" />
+        </HBox>
+
+    </VBox>
+
+</VBox>

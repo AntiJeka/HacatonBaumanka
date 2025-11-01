@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="60.0" xmlns:fx="http://javafx.com/fxml/1"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      fx:controller="ru.kofa.hacatonfintech.controller.MenuController"
+      style="-fx-background-color: #2c3e50;"
+      prefHeight="800" prefWidth="1200">
+
+    <!-- Заголовок системы -->
+    <VBox alignment="CENTER" spacing="20">
+        <Label text="СКЛАД"
+               style="-fx-text-fill: #ecf0f1; -fx-font-size: 64px; -fx-font-weight: bold; -fx-font-family: 'Arial';"/>
+        <Label text="Система управления объектами"
+               style="-fx-text-fill: #bdc3c7; -fx-font-size: 24px; -fx-font-family: 'Arial';"/>
+        <Separator prefWidth="600" style="-fx-background-color: #34495e;"/>
+    </VBox>
+
+    <!-- Панель действий -->
+    <GridPane alignment="CENTER" hgap="50" vgap="50">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="400"/>
+            <ColumnConstraints prefWidth="400"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints prefHeight="250"/>
+        </rowConstraints>
+
+        <!-- Кнопка выбора объекта -->
+        <Button onAction="#handleSelectObject"
+                style="-fx-pref-width: 400px; -fx-pref-height: 250px; -fx-background-color: #34495e; -fx-border-color: #16a085; -fx-border-width: 4; -fx-background-radius: 12; -fx-border-radius: 12; -fx-cursor: hand;"
+                GridPane.columnIndex="0">
+            <graphic>
+                <VBox alignment="CENTER" spacing="20">
+                    <Label text="📋" style="-fx-font-size: 48px;"/>
+                    <Label text="ВЫБРАТЬ ОБЪЕКТ"
+                           style="-fx-text-fill: #ecf0f1; -fx-font-size: 24px; -fx-font-weight: bold; -fx-font-family: 'Arial';"/>
+                    <Label text="Просмотр и выбор объектов"
+                           style="-fx-text-fill: #bdc3c7; -fx-font-size: 16px;"/>
+                </VBox>
+            </graphic>
+        </Button>
+
+        <!-- Кнопка добавления объекта -->
+        <Button onAction="#handleAddObject"
+                style="-fx-pref-width: 400px; -fx-pref-height: 250px; -fx-background-color: #34495e; -fx-border-color: #2980b9; -fx-border-width: 4; -fx-background-radius: 12; -fx-border-radius: 12; -fx-cursor: hand;"
+                GridPane.columnIndex="1">
+            <graphic>
+                <VBox alignment="CENTER" spacing="20">
+                    <Label text="➕" style="-fx-font-size: 48px;"/>
+                    <Label text="ДОБАВИТЬ ОБЪЕКТ"
+                           style="-fx-text-fill: #ecf0f1; -fx-font-size: 24px; -fx-font-weight: bold; -fx-font-family: 'Arial';"/>
+                    <Label text="Добавление новых объектов"
+                           style="-fx-text-fill: #bdc3c7; -fx-font-size: 16px;"/>
+                </VBox>
+            </graphic>
+        </Button>
+    </GridPane>
+
+    <!-- Нижняя панель -->
+    <VBox alignment="CENTER" spacing="15" style="-fx-padding: 40 0 0 0;">
+        <Separator prefWidth="600" style="-fx-background-color: #34495e;"/>
+        <Button onAction="#handleExit"
+                style="-fx-pref-width: 250px; -fx-pref-height: 60px; -fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-border-radius: 8; -fx-cursor: hand;">
+            <graphic>
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="⏻" style="-fx-font-size: 20px;"/>
+                    <Label text="ВЫХОД" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+                </HBox>
+            </graphic>
+        </Button>
+    </VBox>
+
+</VBox>
