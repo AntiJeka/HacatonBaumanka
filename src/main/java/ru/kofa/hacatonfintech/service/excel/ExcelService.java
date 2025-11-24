@@ -1,4 +1,4 @@
-package ru.kofa.hacatonfintech.service;
+package ru.kofa.hacatonfintech.service.excel;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ExcelService {
+public class ExcelService implements IExcelService {
     private static final String FILE_PATH = "src/main/resources/allCell.xlsx";
 
-    public void addObject(String name, String cell) {
+    public String addObject(String name, String cell) {
         Workbook workbook = null;
         File file = new File(FILE_PATH);
+        String freeCell = "";
 
         try {
             if (file.exists()) {
@@ -30,12 +31,11 @@ public class ExcelService {
 
             Sheet sheet = workbook.getSheetAt(0);
 
-            if (cell == null || cell.isEmpty()) {
+            if (cell.isEmpty()) {
                 Iterator<Row> rowIterator = sheet.rowIterator();
                 if (rowIterator.hasNext()) {
                     rowIterator.next();
                 }
-
                 while (rowIterator.hasNext()) {
                     Row row = rowIterator.next();
                     Cell objectCell = row.getCell(1);
@@ -49,6 +49,7 @@ public class ExcelService {
                             objectCell = row.createCell(1);
                         }
                         objectCell.setCellValue(name);
+                        freeCell = row.getCell(0).getStringCellValue();
                         break;
                     }
                 }
@@ -72,6 +73,8 @@ public class ExcelService {
                         }
                         objectCell.setCellValue(name);
                         cellFound = true;
+
+                        freeCell = row.getCell(0).getStringCellValue();
                         break;
                     }
                 }
@@ -79,6 +82,8 @@ public class ExcelService {
                 if (!cellFound) {
                     throw new RuntimeException("Ячейка " + cell + " не найдена в файле");
                 }
+
+                return freeCell;
             }
 
             try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -96,6 +101,7 @@ public class ExcelService {
                 }
             }
         }
+        return name;
     }
 
     public List<StoreObject> getAllStoreObjects() {
@@ -210,6 +216,63 @@ public class ExcelService {
 
         } catch (IOException e) {
             throw new RuntimeException("Ошибка при чтении Excel файла", e);
+        }
+    }
+
+    @Override
+    public void deleteCell(String cell) {
+        Workbook workbook = null;
+        File file = new File(FILE_PATH);
+
+        try {
+            if (!file.exists()) {
+                return;
+            }
+
+            workbook = new XSSFWorkbook(new FileInputStream(file));
+            Sheet sheet = workbook.getSheetAt(0);
+
+            Iterator<Row> rowIterator = sheet.rowIterator();
+            if (rowIterator.hasNext()) {
+                rowIterator.next();
+            }
+
+            boolean cellFound = false;
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Cell cellCell = row.getCell(0);
+
+                if (cellCell != null && cellCell.getCellType() == CellType.STRING &&
+                        cellCell.getStringCellValue().equals(cell)) {
+
+                    Cell objectCell = row.getCell(1);
+                    if (objectCell == null) {
+                        objectCell = row.createCell(1);
+                    }
+                    objectCell.setCellValue("");
+                    cellFound = true;
+                    break;
+                }
+            }
+
+            if (!cellFound) {
+                throw new RuntimeException("Ячейка " + cell + " не найдена в файле");
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                workbook.write(fos);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка при работе с Excel файлом", e);
+        } finally {
+            if (workbook != null) {
+                try {
+                    workbook.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

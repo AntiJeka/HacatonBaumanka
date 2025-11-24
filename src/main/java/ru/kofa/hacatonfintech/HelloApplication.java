@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import ru.kofa.hacatonfintech.controller.AddObjectController;
 import ru.kofa.hacatonfintech.controller.MenuController;
 import ru.kofa.hacatonfintech.controller.SelectController;
-import ru.kofa.hacatonfintech.service.ExcelService;
+import ru.kofa.hacatonfintech.service.excel.ExcelService;
 
 import java.io.IOException;
 

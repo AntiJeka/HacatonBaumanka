@@ -38,8 +38,6 @@
             <HBox alignment="CENTER_LEFT" spacing="15">
                 <Label text="НОМЕР ЯЧЕЙКИ"
                        style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #ecf0f1; -fx-font-family: 'Arial';" />
-                <Label text="(опционально)"
-                       style="-fx-font-size: 14px; -fx-text-fill: #bdc3c7; -fx-font-style: italic;" />
             </HBox>
             <TextField fx:id="cellField"
                        promptText="A1, B2, C3..."
@@ -59,6 +57,13 @@
                     onAction="#handleAddObject"
                     style="-fx-pref-width: 200px; -fx-pref-height: 65px; -fx-font-size: 18px; -fx-font-weight: bold; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 8; -fx-border-radius: 8; -fx-cursor: hand; -fx-font-family: 'Arial';"
                     HBox.hgrow="ALWAYS" />
+
+            <Button fx:id="closeButton"
+                    text="ЗАКРЫТЬ"
+                    onAction="#handleCloseButton"
+                    style="-fx-pref-width: 200px; -fx-pref-height: 65px; -fx-font-size: 18px; -fx-font-weight: bold; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 8; -fx-border-radius: 8; -fx-cursor: hand; -fx-font-family: 'Arial';"
+                    HBox.hgrow="ALWAYS"
+                    visible="false" />
 
             <Button text="НАЗАД"
                     onAction="#handleBackButton"

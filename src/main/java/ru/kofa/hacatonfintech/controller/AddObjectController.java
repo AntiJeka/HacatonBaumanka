@@ -7,14 +7,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lombok.Setter;
 import ru.kofa.hacatonfintech.HelloApplication;
-import ru.kofa.hacatonfintech.service.ExcelService;
+import ru.kofa.hacatonfintech.service.excel.ExcelService;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddObjectController implements Initializable {
+
+    private String lastCell = "";
 
     @Setter
     private ExcelService excelService;
@@ -34,10 +35,15 @@ public class AddObjectController implements Initializable {
     @FXML
     private Button addButton;
 
+    @FXML
+    private Button closeButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         nameField.textProperty().addListener((observable, oldValue, newValue) -> clearError());
         cellField.textProperty().addListener((observable, oldValue, newValue) -> clearError());
+
+        closeButton.setVisible(false);
     }
 
     @FXML
@@ -55,28 +61,27 @@ public class AddObjectController implements Initializable {
             return;
         }
 
-        String cellToSave = cell.isEmpty() ? "" : cell;
-
         try {
             if (excelService != null) {
-                boolean flag = false;
-                if (!cellToSave.isEmpty()) {
-                    flag = excelService.isAvailable(cellToSave);
-                }
+                boolean flag;
+                if (!cell.isEmpty()) {
+                    flag = excelService.isAvailable(cell);
+                    if (flag) {
+                        lastCell = excelService.addObject(name, cell);
 
-                if (flag) {
-                    excelService.addObject(name, cellToSave);
-                    nameField.clear();
-                    cellField.clear();
-                    clearError();
-
-                    showSuccess("Объект успешно добавлен!");
+                        System.out.println(lastCell + " OPEN");
+                        showSuccessAndSwitchButtons("Объект успешно добавлен!");
+                    } else {
+                        cellField.clear();
+                        List<String> list = excelService.getAvailableCells();
+                        showError("Данная ячейка занята. Список доступных ячеек: " + list.toString());
+                    }
                 } else {
-                    cellField.clear();
-                    List<String> list = excelService.getAvailableCells();
-                    showError("Данная ячейка занята. Список доступных ячеек: " + list.toString());
-                }
+                    lastCell = excelService.addObject(name, cell);
 
+                    System.out.println(lastCell + " OPEN");
+                    showSuccessAndSwitchButtons("Объект успешно добавлен!");
+                }
             } else {
                 showError("Сервис не доступен");
             }
@@ -88,9 +93,25 @@ public class AddObjectController implements Initializable {
     }
 
     @FXML
+    private void handleCloseButton() {
+        nameField.clear();
+        cellField.clear();
+        clearError();
+
+        System.out.println(lastCell + " CLOSE");
+        lastCell = "";
+
+        addButton.setVisible(true);
+        closeButton.setVisible(false);
+    }
+
+    @FXML
     private void handleBackButton() {
         try {
             helloApp.showMainMenu();
+            if (!lastCell.isEmpty()) {
+                System.out.println(lastCell + " CLOSE");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,10 +123,16 @@ public class AddObjectController implements Initializable {
         errorLabel.setStyle("-fx-text-fill: #e74c3c;");
     }
 
-    private void showSuccess(String message) {
+    private void showSuccessAndSwitchButtons(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
         errorLabel.setStyle("-fx-text-fill: #27ae60;");
+
+        nameField.clear();
+        cellField.clear();
+
+        addButton.setVisible(false);
+        closeButton.setVisible(true);
     }
 
     private void clearError() {
