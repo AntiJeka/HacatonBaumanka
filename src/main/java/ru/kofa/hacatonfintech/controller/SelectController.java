@@ -54,29 +54,23 @@ public class SelectController implements Initializable {
                             setGraphic(null);
                         } else {
                             HBox hbox = new HBox();
-                            hbox.setStyle("-fx-alignment: center-left; -fx-padding: 8; -fx-background-color: #2c3e50; -fx-background-radius: 6;");
-                            hbox.setPrefHeight(45);
+                            hbox.setStyle("-fx-alignment: center-left; -fx-padding: 15; -fx-background-color: #2c3e50; -fx-background-radius: 8;");
+                            hbox.setPrefHeight(70);
 
-                            // Обрезаем длинные названия объектов
-                            String displayName = item.getName();
-                            if (displayName.length() > 15) {
-                                displayName = displayName.substring(0, 15) + "...";
-                            }
-
-                            Label nameLabel = new Label(displayName);
-                            nameLabel.setPrefWidth(200);
-                            nameLabel.setStyle("-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #ecf0f1; -fx-font-family: 'Arial';");
+                            Label nameLabel = new Label(item.getName());
+                            nameLabel.setPrefWidth(600);
+                            nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #ecf0f1; -fx-font-family: 'Arial';");
 
                             Label cellLabel = new Label(item.getCellNumber());
-                            cellLabel.setPrefWidth(100);
-                            cellLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #bdc3c7; -fx-font-family: 'Arial';");
+                            cellLabel.setPrefWidth(300);
+                            cellLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #bdc3c7; -fx-font-family: 'Arial';");
 
                             HBox buttonBox = new HBox();
-                            buttonBox.setSpacing(5);
-                            buttonBox.setPrefWidth(120);
+                            buttonBox.setSpacing(10);
+                            buttonBox.setPrefWidth(320);
 
                             Button actionButton = new Button();
-                            Button deleteButton = new Button("УДАЛ");
+                            Button deleteButton = new Button("УДАЛИТЬ");
 
                             boolean isOpen = objectStates.getOrDefault(item, false);
                             updateButtonText(actionButton, isOpen);
@@ -84,8 +78,8 @@ public class SelectController implements Initializable {
                             actionButton.setOnAction(e -> handleObjectAction(item, actionButton, deleteButton));
                             deleteButton.setOnAction(e -> handleDeleteObject(item, actionButton, deleteButton));
 
-                            actionButton.setStyle("-fx-pref-width: 55px; -fx-pref-height: 25px; -fx-font-size: 9px; -fx-font-weight: bold; -fx-background-radius: 3; -fx-border-radius: 3; -fx-cursor: hand; -fx-font-family: 'Arial';");
-                            deleteButton.setStyle("-fx-pref-width: 55px; -fx-pref-height: 25px; -fx-font-size: 9px; -fx-font-weight: bold; -fx-background-radius: 3; -fx-border-radius: 3; -fx-cursor: hand; -fx-font-family: 'Arial';");
+                            actionButton.setStyle("-fx-pref-width: 150px; -fx-pref-height: 45px; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-family: 'Arial';");
+                            deleteButton.setStyle("-fx-pref-width: 150px; -fx-pref-height: 45px; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-family: 'Arial';");
 
                             updateButtonStyle(actionButton, isOpen);
                             updateDeleteButtonStyle(deleteButton, isOpen);
@@ -116,15 +110,27 @@ public class SelectController implements Initializable {
 
         deleteButton.setVisible(newState);
 
-        if (newState) {
-            System.out.println(object.getCellNumber() + " OPEN");
-        } else {
-            System.out.println(object.getCellNumber() + " CLOSE");
+        try {
+            String command = object.getCellNumber() + (newState ? " OPEN" : " CLOSE");
+            boolean success = arduinoService.setStatusCell(command);
+            if (success) {
+                System.out.println("Команда отправлена: " + command);
+            } else {
+                System.err.println("Не удалось отправить команду: " + command);
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка при отправке команды на Arduino: " + e.getMessage());
         }
     }
 
     private void handleDeleteObject(StoreObject object, Button actionButton, Button deleteButton) {
         System.out.println(object.getName() + " " + object.getCellNumber() + " CLOSE");
+
+        try {
+            arduinoService.setStatusCell(object.getCellNumber() + " CLOSE");
+        } catch (Exception e) {
+            System.err.println("Ошибка при отправке команды закрытия: " + e.getMessage());
+        }
 
         if (excelService != null) {
             excelService.deleteCell(object.getCellNumber());
@@ -140,7 +146,7 @@ public class SelectController implements Initializable {
 
     private void updateButtonText(Button button, boolean isOpen) {
         if (isOpen) {
-            button.setText("ЗАКРТЫТЬ");
+            button.setText("ЗАКРЫТЬ");
         } else {
             button.setText("ОТКРЫТЬ");
         }
@@ -148,25 +154,25 @@ public class SelectController implements Initializable {
 
     private void updateButtonStyle(Button button, boolean isOpen) {
         if (isOpen) {
-            button.setStyle("-fx-pref-width: 55px; -fx-pref-height: 25px; -fx-font-size: 9px; " +
+            button.setStyle("-fx-pref-width: 150px; -fx-pref-height: 45px; -fx-font-size: 16px; " +
                     "-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; " +
-                    "-fx-background-radius: 3; -fx-border-radius: 3; -fx-cursor: hand; -fx-font-family: 'Arial';");
+                    "-fx-background-radius: 5; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-family: 'Arial';");
         } else {
-            button.setStyle("-fx-pref-width: 55px; -fx-pref-height: 25px; -fx-font-size: 9px; " +
+            button.setStyle("-fx-pref-width: 150px; -fx-pref-height: 45px; -fx-font-size: 16px; " +
                     "-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; " +
-                    "-fx-background-radius: 3; -fx-border-radius: 3; -fx-cursor: hand; -fx-font-family: 'Arial';");
+                    "-fx-background-radius: 5; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-family: 'Arial';");
         }
     }
 
     private void updateDeleteButtonStyle(Button button, boolean isOpen) {
         if (isOpen) {
-            button.setStyle("-fx-pref-width: 55px; -fx-pref-height: 25px; -fx-font-size: 9px; " +
+            button.setStyle("-fx-pref-width: 150px; -fx-pref-height: 45px; -fx-font-size: 16px; " +
                     "-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold; " +
-                    "-fx-background-radius: 3; -fx-border-radius: 3; -fx-cursor: hand; -fx-font-family: 'Arial';");
+                    "-fx-background-radius: 5; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-family: 'Arial';");
         } else {
-            button.setStyle("-fx-pref-width: 55px; -fx-pref-height: 25px; -fx-font-size: 9px; " +
+            button.setStyle("-fx-pref-width: 150px; -fx-pref-height: 45px; -fx-font-size: 16px; " +
                     "-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold; " +
-                    "-fx-background-radius: 3; -fx-border-radius: 3; -fx-cursor: hand; -fx-font-family: 'Arial';");
+                    "-fx-background-radius: 5; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-family: 'Arial';");
         }
     }
 
@@ -179,7 +185,7 @@ public class SelectController implements Initializable {
             objectsListView.getItems().addAll(objects);
 
             if (countLabel != null) {
-                countLabel.setText("Найдено: " + objects.size());
+                countLabel.setText("Найдено объектов: " + objects.size());
             }
         }
     }
@@ -191,5 +197,10 @@ public class SelectController implements Initializable {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @FXML
+    private void handleRefreshButton() {
+        loadObjects();
     }
 }

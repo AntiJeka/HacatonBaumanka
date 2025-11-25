@@ -6,40 +6,40 @@
 <VBox xmlns="http://javafx.com/javafx/11.0.1"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ru.kofa.hacatonfintech.controller.SelectController"
-      spacing="15.0"
-      style="-fx-padding: 20; -fx-background-color: #2c3e50;"
-      prefHeight="320" prefWidth="480">
+      spacing="30.0"
+      style="-fx-padding: 40; -fx-background-color: #2c3e50;"
+      prefHeight="800" prefWidth="1200">
 
     <!-- Основной контент -->
-    <VBox spacing="10" style="-fx-background-color: #34495e; -fx-background-radius: 8; -fx-padding: 15; -fx-border-color: #7f8c8d; -fx-border-width: 1; -fx-border-radius: 8;"
+    <VBox spacing="20" style="-fx-background-color: #34495e; -fx-background-radius: 12; -fx-padding: 25; -fx-border-color: #7f8c8d; -fx-border-width: 2; -fx-border-radius: 12;"
           VBox.vgrow="ALWAYS">
 
         <!-- Заголовки таблицы -->
-        <HBox style="-fx-background-color: #2c3e50; -fx-padding: 10; -fx-border-radius: 6;">
+        <HBox style="-fx-background-color: #2c3e50; -fx-padding: 20; -fx-border-radius: 8;">
             <Label text="ОБЪЕКТ"
-                   style="-fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-font-size: 12px; -fx-pref-width: 200; -fx-font-family: 'Arial';"/>
+                   style="-fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-font-size: 20px; -fx-pref-width: 600; -fx-font-family: 'Arial';"/>
             <Label text="ЯЧЕЙКА"
-                   style="-fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-font-size: 12px; -fx-pref-width: 100; -fx-font-family: 'Arial';"/>
+                   style="-fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-font-size: 20px; -fx-pref-width: 300; -fx-font-family: 'Arial';"/>
             <Label text="ДЕЙСТВИЯ"
-                   style="-fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-font-size: 12px; -fx-pref-width: 120; -fx-font-family: 'Arial';"/>
+                   style="-fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-font-size: 20px; -fx-pref-width: 200; -fx-font-family: 'Arial';"/>
         </HBox>
 
         <!-- Список объектов -->
         <ListView fx:id="objectsListView"
-                  style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 10px;"
+                  style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 16px;"
                   VBox.vgrow="ALWAYS">
         </ListView>
 
     </VBox>
 
     <!-- Нижняя панель -->
-    <HBox alignment="CENTER_RIGHT" spacing="10">
-        <Label text="СКЛАД"
-               style="-fx-text-fill: #bdc3c7; -fx-font-size: 10px; -fx-font-family: 'Arial';"
+    <HBox alignment="CENTER_RIGHT" spacing="20">
+        <Label text="СКЛАД • Система управления объектами"
+               style="-fx-text-fill: #bdc3c7; -fx-font-size: 14px; -fx-font-family: 'Arial';"
                HBox.hgrow="ALWAYS"/>
         <Button text="НАЗАД"
                 onAction="#handleBackButton"
-                style="-fx-pref-width: 80px; -fx-pref-height: 30px; -fx-font-size: 10px; -fx-font-weight: bold; -fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 4; -fx-border-radius: 4; -fx-cursor: hand; -fx-font-family: 'Arial';" />
+                style="-fx-pref-width: 150px; -fx-pref-height: 55px; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 6; -fx-border-radius: 6; -fx-cursor: hand; -fx-font-family: 'Arial';" />
     </HBox>
 
 </VBox>

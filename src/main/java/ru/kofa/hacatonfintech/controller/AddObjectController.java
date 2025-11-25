@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lombok.Setter;
 import ru.kofa.hacatonfintech.HelloApplication;
+import ru.kofa.hacatonfintech.service.arduino.ArduinoService;
 import ru.kofa.hacatonfintech.service.excel.ExcelService;
 
 import java.net.URL;
@@ -16,6 +17,7 @@ import java.util.ResourceBundle;
 public class AddObjectController implements Initializable {
 
     private String lastCell = "";
+    private final ArduinoService arduinoService = new ArduinoService();
 
     @Setter
     private ExcelService excelService;
@@ -64,12 +66,21 @@ public class AddObjectController implements Initializable {
         try {
             if (excelService != null) {
                 boolean flag;
+                String command = "OPEN";
                 if (!cell.isEmpty()) {
                     flag = excelService.isAvailable(cell);
                     if (flag) {
                         lastCell = excelService.addObject(name, cell);
-
-                        System.out.println(lastCell + " OPEN");
+//                        try {
+//                            boolean success = arduinoService.setStatusCell(command);
+//                            if (success) {
+//                                System.out.println("Команда отправлена: " + command);
+//                            } else {
+//                                System.err.println("Не удалось отправить команду: " + command);
+//                            }
+//                        } catch (Exception e) {
+//                            System.err.println("Ошибка при отправке команды на Arduino: " + e.getMessage());
+//                        }
                         showSuccessAndSwitchButtons("Объект успешно добавлен!");
                     } else {
                         cellField.clear();
@@ -79,7 +90,18 @@ public class AddObjectController implements Initializable {
                 } else {
                     lastCell = excelService.addObject(name, cell);
 
-                    System.out.println(lastCell + " OPEN");
+//                    try {
+//                        boolean success = arduinoService.setStatusCell(command);
+//                        if (success) {
+//                            System.out.println("Команда отправлена: " + command);
+//
+//                        } else {
+//                            System.err.println("Не удалось отправить команду: " + command);
+//                        }
+//                    } catch (Exception e) {
+//                        System.err.println("Ошибка при отправке команды на Arduino: " + e.getMessage());
+//                    }
+
                     showSuccessAndSwitchButtons("Объект успешно добавлен!");
                 }
             } else {
@@ -98,7 +120,18 @@ public class AddObjectController implements Initializable {
         cellField.clear();
         clearError();
 
-        System.out.println(lastCell + " CLOSE");
+        String command = "CLOSE";
+//        try {
+//            boolean success = arduinoService.setStatusCell(command);
+//            if (success) {
+//                System.out.println("Команда отправлена: " + command);
+//            } else {
+//                System.err.println("Не удалось отправить команду: " + command);
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Ошибка при отправке команды на Arduino: " + e.getMessage());
+//        }
+
         lastCell = "";
 
         addButton.setVisible(true);

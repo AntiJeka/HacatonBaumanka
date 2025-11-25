@@ -31,7 +31,7 @@ public class ExcelService implements IExcelService {
 
             Sheet sheet = workbook.getSheetAt(0);
 
-            if (cell.isEmpty()) {
+            if (cell == null || cell.isEmpty()) {
                 Iterator<Row> rowIterator = sheet.rowIterator();
                 if (rowIterator.hasNext()) {
                     rowIterator.next();
@@ -66,14 +66,14 @@ public class ExcelService implements IExcelService {
 
                     if (cellCell != null && cellCell.getCellType() == CellType.STRING &&
                             cellCell.getStringCellValue().equals(cell)) {
-
                         Cell objectCell = row.getCell(1);
+
                         if (objectCell == null) {
                             objectCell = row.createCell(1);
                         }
                         objectCell.setCellValue(name);
-                        cellFound = true;
 
+                        cellFound = true;
                         freeCell = row.getCell(0).getStringCellValue();
                         break;
                     }
@@ -82,13 +82,13 @@ public class ExcelService implements IExcelService {
                 if (!cellFound) {
                     throw new RuntimeException("Ячейка " + cell + " не найдена в файле");
                 }
-
-                return freeCell;
             }
 
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 workbook.write(fos);
             }
+
+            return freeCell;
 
         } catch (Exception e) {
             throw new RuntimeException("Ошибка при работе с Excel файлом", e);
@@ -101,7 +101,6 @@ public class ExcelService implements IExcelService {
                 }
             }
         }
-        return name;
     }
 
     public List<StoreObject> getAllStoreObjects() {
